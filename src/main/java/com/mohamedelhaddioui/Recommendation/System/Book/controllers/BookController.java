@@ -18,7 +18,6 @@ public class BookController {
     }
     @GetMapping("/books/{bookId}")
     public book getBook(@PathVariable String bookId){
-        System.out.println("get book "+bookId);
         book book = bookService.getBook(bookId);
         return book;
     }

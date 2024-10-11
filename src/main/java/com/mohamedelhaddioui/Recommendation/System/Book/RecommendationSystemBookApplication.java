@@ -1,8 +1,9 @@
 package com.mohamedelhaddioui.Recommendation.System.Book;
-
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.BookRating;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.book;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
+import com.mohamedelhaddioui.Recommendation.System.Book.security.auth.AuthenticationService;
+import com.mohamedelhaddioui.Recommendation.System.Book.security.auth.RegisterRequest;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.BookRatingService;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.BookService;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.UserService;
@@ -16,7 +17,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
-
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +28,9 @@ import java.util.regex.Pattern;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 
+import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.ADMIN;
+import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.MANAGER;
+
 @SpringBootApplication
 public class RecommendationSystemBookApplication {
 
@@ -35,9 +38,26 @@ public class RecommendationSystemBookApplication {
 		SpringApplication.run(RecommendationSystemBookApplication.class, args);
 	}
 	@Bean
-	CommandLineRunner commandLineRunner (BookService bookService, UserService userService, BookRatingService bookRatingService)
-	{
+	CommandLineRunner commandLineRunner (BookService bookService, UserService userService, BookRatingService bookRatingService,AuthenticationService service) {
 		return args -> {
+//			var admin = RegisterRequest.builder()
+//					.prenom("Admin")
+//					.nom("Admin")
+//					.gmail("admin@mail.com")
+//					.password("password")
+//					.role(ADMIN)
+//					.build();
+//			System.out.println("Admin token: " + service.register(admin).getAccessToken());
+
+//			var manager = RegisterRequest.builder()
+//					.prenom("MANAGER")
+//					.nom("MANAGER")
+//					.gmail("manager@mail.com")
+//					.password("password")
+//					.role(MANAGER)
+//					.build();
+//			System.out.println("Manager token: " + service.register(manager).getAccessToken());
+
 			// Charger les rating-books
 //			try (BufferedReader br = Files.newBufferedReader(Paths.get("C:/Users/asus/Music/Recommendation System Book/BX-CSV-Dump/BX-Book-Ratings.csv"), StandardCharsets.ISO_8859_1)) {
 //				CSVParser parser = new CSVParserBuilder().withSeparator(';').build();
@@ -122,7 +142,7 @@ public class RecommendationSystemBookApplication {
 //				e.printStackTrace();
 //			}
 
-			// Charger les users
+//			 Charger les users
 //			IOUtils.setByteArrayMaxOverride(200_000_000);
 //			try (FileInputStream fis = new FileInputStream(Paths.get("C:/Users/asus/Music/Recommendation System Book/BX-CSV-Dump/users.xlsx").toFile());
 //				 Workbook workbook = new XSSFWorkbook(fis)) {
@@ -138,7 +158,6 @@ public class RecommendationSystemBookApplication {
 //						String userIdStr = getCellValue(row.getCell(0));
 //						String ageStr = getCellValue(row.getCell(2));
 //						String gmail = getCellValue(row.getCell(6));
-//
 //						// Vérifications
 //						if (!userIdPattern.matcher(userIdStr).matches()) {
 //							System.out.println("Invalid userId: " + userIdStr);
@@ -155,21 +174,23 @@ public class RecommendationSystemBookApplication {
 //							continue;
 //						}
 //
+//
 //						i++;
 //						System.out.println("i: " + i);
 //						System.out.println("User " + userIdStr);
-//
-//						user u1 = user.builder()
+//						String gmailWithI = gmail.replace("@", i+"@");
+//						var u3 = RegisterRequest.builder()
 //								.id(Long.valueOf(userIdStr))
 //								.location(getCellValue(row.getCell(1)))
 //								.age((long) Double.parseDouble(ageStr))
 //								.nom(getCellValue(row.getCell(3)))
 //								.prenom(getCellValue(row.getCell(4)))
 //								.tel(getCellValue(row.getCell(5)))
-//								.gmail(gmail)
+//								.gmail(gmailWithI)
+//								.password(getCellValue(row.getCell(3))+" "+getCellValue(row.getCell(4)))
+//								.role(MANAGER)
 //								.build();
-//
-//						userService.saveUser(u1);
+//						service.register(u3);
 //					} else {
 //						System.out.println("Invalid row length: " + row.getPhysicalNumberOfCells());
 //					}
@@ -180,7 +201,7 @@ public class RecommendationSystemBookApplication {
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
-//
+
 
 
 

@@ -1,4 +1,5 @@
 package com.mohamedelhaddioui.Recommendation.System.Book.controllers;
+import com.mohamedelhaddioui.Recommendation.System.Book.entites.ChangePasswordRequest;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.book;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.BookService;
@@ -7,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.util.*;
+@RequestMapping("/api/v1")
 @RestController
 public class UserController {
     private UserService userService;
@@ -35,6 +39,15 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @DeleteMapping("/")
+    @PatchMapping
+    public ResponseEntity<?> changePassword(
+            @RequestBody ChangePasswordRequest request,
+            Principal connectedUser
+    ) {
+        userService.changePassword(request, connectedUser);
+        return ResponseEntity.ok().build();
     }
 
 }
