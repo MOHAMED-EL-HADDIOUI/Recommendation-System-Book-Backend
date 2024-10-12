@@ -26,7 +26,35 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    // Build the user object
+    // Vérification des champs vides
+    if (request.getPrenom() == null || request.getPrenom().isEmpty()) {
+      throw new IllegalArgumentException("Le prénom est requis.");
+    }
+    if (request.getNom() == null || request.getNom().isEmpty()) {
+      throw new IllegalArgumentException("Le nom est requis.");
+    }
+    if (request.getGmail() == null || request.getGmail().isEmpty() || !request.getGmail().contains("@")) {
+      throw new IllegalArgumentException("L'adresse e-mail est invalide.");
+    }
+    if (request.getPassword() == null || request.getPassword().isEmpty() || request.getPassword().length() < 8) {
+      throw new IllegalArgumentException("Le mot de passe doit comporter au moins 8 caractères.");
+    }
+    if (request.getAge() == null || request.getAge() <= 0) {
+      throw new IllegalArgumentException("L'âge doit être un nombre valide.");
+    }
+    if (request.getTel() == null || request.getTel().isEmpty()) {
+      throw new IllegalArgumentException("Le numéro de téléphone est requis.");
+    }
+    if (request.getLocation() == null || request.getLocation().isEmpty()) {
+      throw new IllegalArgumentException("Le lieu est requis.");
+    }
+
+    // Vérification si l'utilisateur existe déjà
+    if (repository.findByGmail(request.getGmail()).isPresent()) {
+      throw new IllegalArgumentException("Un utilisateur avec cette adresse e-mail existe déjà.");
+    }
+
+    // Création de l'objet utilisateur
     var user = com.mohamedelhaddioui.Recommendation.System.Book.entites.user.builder()
             .prenom(request.getPrenom())
             .nom(request.getNom())
@@ -39,22 +67,23 @@ public class AuthenticationService {
             .role(request.getRole())
             .build();
 
-    // Save the user to the repository
+    // Enregistrement de l'utilisateur dans le repository
     var savedUser = repository.save(user);
 
-    // Generate tokens with the userId
-    var jwtToken = jwtService.generateToken(savedUser, savedUser.getId()); // Include userId
-    var refreshToken = jwtService.generateRefreshToken(savedUser, savedUser.getId()); // Include userId
+    // Génération des tokens avec l'ID de l'utilisateur
+    var jwtToken = jwtService.generateToken(savedUser, savedUser.getId());
+    var refreshToken = jwtService.generateRefreshToken(savedUser, savedUser.getId());
 
-    // Save the user's token in the repository
+    // Sauvegarde du token utilisateur
     saveUserToken(savedUser, jwtToken);
 
-    // Return the response with access and refresh tokens
+    // Retourne la réponse avec les tokens d'accès et de rafraîchissement
     return AuthenticationResponse.builder()
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .build();
   }
+
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
     // Authenticate the user

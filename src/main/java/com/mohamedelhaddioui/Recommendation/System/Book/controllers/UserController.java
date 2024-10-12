@@ -2,6 +2,7 @@ package com.mohamedelhaddioui.Recommendation.System.Book.controllers;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.ChangePasswordRequest;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.book;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
+import com.mohamedelhaddioui.Recommendation.System.Book.security.auth.RegisterRequest;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.BookService;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -49,5 +50,6 @@ public class UserController {
         userService.changePassword(request, connectedUser);
         return ResponseEntity.ok().build();
     }
+
 
 }

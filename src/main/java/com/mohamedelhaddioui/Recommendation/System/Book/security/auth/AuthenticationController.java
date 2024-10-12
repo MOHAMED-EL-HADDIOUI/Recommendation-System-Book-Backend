@@ -1,14 +1,12 @@
 package com.mohamedelhaddioui.Recommendation.System.Book.security.auth;
 
+import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
 import com.mohamedelhaddioui.Recommendation.System.Book.enums.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -25,14 +23,12 @@ public class AuthenticationController {
   ) {
     RegisterRequest registerRequest = request;
     registerRequest.setRole(Role.MANAGER);
-    System.out.println(registerRequest.toString());
     return ResponseEntity.ok(service.register(registerRequest));
   }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
-    System.out.println(service.authenticate(request));
     return ResponseEntity.ok(service.authenticate(request));
   }
 
@@ -43,4 +39,5 @@ public class AuthenticationController {
   ) throws IOException {
     service.refreshToken(request, response);
   }
+
 }

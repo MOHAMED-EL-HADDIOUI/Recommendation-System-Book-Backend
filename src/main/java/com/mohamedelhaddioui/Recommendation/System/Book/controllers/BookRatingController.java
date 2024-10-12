@@ -49,6 +49,20 @@ public class BookRatingController {
         int bookRating = bookRatingService.getRating(userId,bookId);
         return bookRating;
     }
+    @PutMapping("/users/update")
+    public ResponseEntity<user> updateUserProfile(HttpServletRequest request,@RequestBody RegisterRequest request_) {
+        String token = request.getHeader("Authorization").substring(7);
+        Long userId = jwtService.extractUserId(token);
+        user user = userService.getUser(userId);
+        user.setPassword(request_.getPassword());
+        user.setNom(request_.getNom());
+        user.setPrenom(request_.getPrenom());
+        user.setAge(request_.getAge());
+        user.setLocation(request_.getLocation());
+        user.setTel(request_.getTel());
+        user user1 = userService.saveUser(user);
+        return ResponseEntity.ok(user1);
+    }
     @PostMapping("/bookRatings/{bookId}/{rating}")
     public ResponseEntity<BookRating>  postbookRating(HttpServletRequest request,@PathVariable("bookId")  String bookId,@PathVariable("rating")  String rating){
         String token = request.getHeader("Authorization").substring(7);
