@@ -9,7 +9,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        System.out.println("--------------------- CorsRegistry ---------------------");
         registry.addMapping("/**") // Appliquer CORS à tous les points de terminaison
                 .allowedOrigins("http://localhost:4200") // Autoriser l'origine localhost:4200
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Autoriser ces méthodes HTTP
