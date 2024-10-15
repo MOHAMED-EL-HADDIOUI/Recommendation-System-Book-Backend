@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  book-backend:
+    build: .
+    container_name: recommendation-system-book
+    ports:
+      - "9462:9462"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/books_data?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      APPLICATION_SECURITY_JWT_SECRET_KEY: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      APPLICATION_SECURITY_JWT_EXPIRATION: 8640000
+      APPLICATION_SECURITY_JWT_REFRESH_TOKEN_EXPIRATION: 60480000
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
