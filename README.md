@@ -6,7 +6,7 @@ Ce projet implémente un système de recommandation de livres. Vous trouverez pl
 
 Le fichier PDF contenant la documentation complète est disponible ici :
 
-[Consultez la documentation (PDF)](https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet.pdf)
+[Consultez la documentation (PDF)]([https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet.pdf](https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet%20.png))
 
 ### Comment télécharger le fichier PDF
 
