@@ -16,7 +16,7 @@ Le fichier PDF contenant la documentation complète est disponible ici :
    ```
 2. Clonez le repository backend (Spring Boot) :
    ```bash
-   git clone https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book.git
+   git clone https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book-Backend.git
    ```
 3. Clonez le repository frontend (Angular) :
    ```bash
