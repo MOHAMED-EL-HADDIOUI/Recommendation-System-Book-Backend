@@ -10,7 +10,7 @@ Le fichier PDF contenant la documentation complète est disponible ici :
 
 L'architecture du projet est également représentée visuellement dans l'image ci-dessous :
 
-![Architecture du projet](https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet.png)
+![Architecture du projet]([https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet.png](https://github.com/MOHAMED-EL-HADDIOUI/Recommendation-System-Book/blob/main/Architecture%20de%20projet%20.png))
 
 ### Comment télécharger le fichier PDF
 
