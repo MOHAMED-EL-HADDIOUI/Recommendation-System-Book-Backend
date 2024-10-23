@@ -39,8 +39,8 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
-            <version>5.0.0</version> <!-- Version compatible avec Jakarta EE 9 -->
-            <scope>provided</scope> <!-- Utilisée pour des bibliothèques fournies par le conteneur de servlets -->
+            <version>5.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,17 +56,6 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.3</version>
         </dependency>
-        <!--		<dependency>-->
-        <!--			<groupId>org.springframework.cloud</groupId>-->
-        <!--			<artifactId>spring-cloud-starter-zookeeper-config</artifactId>-->
-        <!--		</dependency>-->
-
-        <!--		<dependency>-->
-        <!--			<groupId>org.springframework.boot</groupId>-->
-        <!--			<artifactId>spring-boot-devtools</artifactId>-->
-        <!--			<scope>runtime</scope>-->
-        <!--			<optional>true</optional>-->
-        <!--		</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -84,11 +73,6 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--		<dependency>-->
-        <!--			<groupId>org.postgresql</groupId>-->
-        <!--			<artifactId>postgresql</artifactId>-->
-        <!--			<scope>runtime</scope>-->
-        <!--		</dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
