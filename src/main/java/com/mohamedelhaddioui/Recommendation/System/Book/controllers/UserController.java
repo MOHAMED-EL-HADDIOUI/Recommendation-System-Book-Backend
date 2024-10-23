@@ -27,7 +27,6 @@ public class UserController {
         String token = request.getHeader("Authorization").substring(7);
         Long userId = jwtService.extractUserId(token);
         user user = userService.getUser(userId);
-        user.setPassword(request_.getPassword());
         user.setNom(request_.getNom());
         user.setPrenom(request_.getPrenom());
         user.setAge(request_.getAge());
