@@ -57,6 +57,7 @@ public class SecurityConfiguration {
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers(GET, "/api/v1/books/**").permitAll()
+                                .requestMatchers(DELETE, "/api/v1/books/**").hasAnyRole(ADMIN_DELETE.name())
                                 .requestMatchers(POST, "/api/v1/books/recommend/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .requestMatchers(GET, "/api/v1/books/similaires/**").permitAll()
                                 .requestMatchers(GET, "/api/v1/bookratings/**").hasAnyRole(ADMIN.name(), MANAGER.name())

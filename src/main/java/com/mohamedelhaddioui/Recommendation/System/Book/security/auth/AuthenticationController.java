@@ -22,14 +22,13 @@ public class AuthenticationController {
       @RequestBody RegisterRequest request
   ) {
     RegisterRequest registerRequest = request;
-    registerRequest.setRole(Role.MANAGER);
+    registerRequest.setRole(Role.USER);
     return ResponseEntity.ok(service.register(registerRequest));
   }
   @PostMapping("/authenticate")
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
-    System.out.println("authenticate");
     return ResponseEntity.ok(service.authenticate(request));
   }
 

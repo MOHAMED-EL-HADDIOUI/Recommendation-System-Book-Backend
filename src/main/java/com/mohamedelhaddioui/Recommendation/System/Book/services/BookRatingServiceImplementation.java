@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -56,6 +57,16 @@ public class BookRatingServiceImplementation implements BookRatingService{
     public int getRating(Long userId, String isbn) {
         BookRating bookRating = bookRatingRepository.findRatingByUserIdAndBookIsbn(userId, isbn);
         return bookRating.getRating(); // Get the rating if present
+    }
+
+    @Override
+    public Long getRatingCount(book book) {
+        return bookRatingRepository.countByBook(book);
+    }
+
+    @Override
+    public Double calculateAvgRatingByBook(book book) {
+        return bookRatingRepository.calculateAvgRatingByBook(book);
     }
 
 }

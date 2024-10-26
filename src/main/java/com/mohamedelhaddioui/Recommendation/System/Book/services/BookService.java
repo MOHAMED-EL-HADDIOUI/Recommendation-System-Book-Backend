@@ -15,6 +15,11 @@ public interface BookService {
     void deletebook (String Id_book);
     book saveBookDTO(BookDTO bookDTO);
     BooksDTO getBookByNom(String s, int page) throws BookNotFoundException;
+    BooksDTO getBooks(String kw, String choix, int page,int pageSize) throws BookNotFoundException;
+
     List<BookDTO> listBooksByPage(int page);
     book updateBook(String Id_book, BookDTO bookDTO);
+    public List<book> getTop5RatedBooks();
+
+    public List<book> findTop5ByWeightedRating();
 }

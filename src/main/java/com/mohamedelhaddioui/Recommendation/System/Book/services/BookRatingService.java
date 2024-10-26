@@ -2,6 +2,7 @@ package com.mohamedelhaddioui.Recommendation.System.Book.services;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.BookRating;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.book;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface BookRatingService {
     void deleteBookRating (Long Id_BookRating);
     public List<book> getBooksRatedByUser(user user);
     public int getRating(Long userId, String isbn);
+    Long getRatingCount(book book);
+    Double calculateAvgRatingByBook (book book);
     }

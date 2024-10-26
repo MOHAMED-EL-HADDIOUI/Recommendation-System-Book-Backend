@@ -27,4 +27,6 @@ public class book {
     private String imageURLM; // medium image URL
 
     private String imageURLL; // large image URL
+    private Double avgRating;
+    private Long ratingCount;
 }

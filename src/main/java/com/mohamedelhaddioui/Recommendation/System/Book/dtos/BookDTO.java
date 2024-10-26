@@ -13,4 +13,6 @@ public class BookDTO {
     private String imageURLS; // small image URL
     private String imageURLM; // medium image URL
     private String imageURLL; // large image URL
+    private Double avgRating;
+    private Long ratingCount;
 }

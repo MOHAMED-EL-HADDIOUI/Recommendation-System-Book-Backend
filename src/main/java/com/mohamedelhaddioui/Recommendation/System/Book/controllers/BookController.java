@@ -1,9 +1,11 @@
 package com.mohamedelhaddioui.Recommendation.System.Book.controllers;
 import com.mohamedelhaddioui.Recommendation.System.Book.dtos.BookDTO;
 import com.mohamedelhaddioui.Recommendation.System.Book.dtos.BooksDTO;
+import com.mohamedelhaddioui.Recommendation.System.Book.dtos.UsersDTO;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.book;
 import com.mohamedelhaddioui.Recommendation.System.Book.entites.user;
 import com.mohamedelhaddioui.Recommendation.System.Book.exceptions.BookNotFoundException;
+import com.mohamedelhaddioui.Recommendation.System.Book.exceptions.UserNotFoundException;
 import com.mohamedelhaddioui.Recommendation.System.Book.mappers.BookMapperImplementation;
 import com.mohamedelhaddioui.Recommendation.System.Book.security.configurations.JwtService;
 import com.mohamedelhaddioui.Recommendation.System.Book.services.BookRatingService;
@@ -52,32 +54,45 @@ public class BookController {
         List<book> list = bookService.getListBooks();
         return list;
     }
+    @GetMapping("/x/search")
+    public BooksDTO getBooks(@RequestParam(name = "keyword", defaultValue = "") String keyword, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "pagesize", defaultValue = "5") int pagesize, @RequestParam(name = "choix", defaultValue = "nom") String choix) throws  BookNotFoundException {
+        BooksDTO booksDTO = bookService.getBooks("%" + keyword + "%",choix, page,pagesize);
+        return booksDTO;
+    }
     @GetMapping("/{bookId}")
     public book getBook(@PathVariable String bookId){
         book book = bookService.getBook(bookId);
         return book;
     }
-    @DeleteMapping("/{bookId}")
+    @GetMapping("/size")
+    public int getSizeBooks(){
+        int size = bookService.getListBooks().size();
+        return size;
+    }
+    @DeleteMapping("/delete/{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable String bookId) {
         bookService.deletebook(bookId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+    @PutMapping("/update/{bookId}")
+    public ResponseEntity<book> updateBook(@PathVariable String bookId, @RequestBody BookDTO bookDTO) {
+        System.out.println("update book "+bookId);
+        book book =  bookService.updateBook(bookId, bookDTO);
+        return ResponseEntity.ok(book);
     }
     @PostMapping("/save")
-    public ResponseEntity<String> savebook(@RequestBody BookDTO bookDTO)
+    public ResponseEntity<book> savebook(@RequestBody BookDTO bookDTO)
     {
+        System.out.println("add book ");
         book book = bookService.saveBookDTO(bookDTO);
-        return ResponseEntity.ok(book.getISBN());
+        return ResponseEntity.ok(book);
     }
     @GetMapping("/search")
     public BooksDTO getBooksByName(@RequestParam(name = "keyword", defaultValue = "") String keyword, @RequestParam(name = "page", defaultValue = "0") int page) throws BookNotFoundException {
-        BooksDTO patientsDTO = bookService.getBookByNom("%" + keyword + "%", page);
-        return patientsDTO;
+        BooksDTO booksDTO = bookService.getBookByNom("%" + keyword + "%", page);
+        return booksDTO;
     }
-    @PutMapping("/update/{bookId}")
-    public book updateBook(@PathVariable String bookId, @RequestBody BookDTO bookDTO) {
-        System.out.println("update book "+bookId);
-        return bookService.updateBook(bookId, bookDTO);
-    }
+
     @GetMapping("/user")
     public BooksDTO getBooksRatedByAuthenticatedUser(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "0") int page) {
         String token = request.getHeader("Authorization").substring(7);
@@ -250,5 +265,14 @@ public class BookController {
             booksDTO.setTotalpage(0);
         }
         return booksDTO;
+    }
+    @GetMapping("/top5ratedbooks")
+    public List<book> getTop5RatedBooks() {
+        return bookService.getTop5RatedBooks();
+    }
+    @GetMapping("/findTop5ByWeightedRating")
+    public List<book> findTop5ByWeightedRating() {
+        System.out.println("get Top books");
+        return bookService.findTop5ByWeightedRating();
     }
 }

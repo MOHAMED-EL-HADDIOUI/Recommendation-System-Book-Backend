@@ -78,6 +78,41 @@ public class BookServiceImplementation implements BookService{
     }
 
     @Override
+    public BooksDTO getBooks(String kw, String choix, int page, int pageSize) throws BookNotFoundException {
+        Page<book> books ;
+        BooksDTO booksDTO= new BooksDTO();
+
+        // Sélection de la méthode de recherche en fonction de `choix`
+        if ("title".equals(choix)) {
+            books = bookRepository.searchByBookTitle(kw, PageRequest.of(page, pageSize));
+        } else if ("isbn".equals(choix)) {
+            books = bookRepository.searchByISBN(kw, PageRequest.of(page, pageSize));
+        } else if ("editor".equals(choix)) {
+            books = bookRepository.searchByPublisher(kw, PageRequest.of(page, pageSize));
+        } else if ("autor".equals(choix)) {
+            books = bookRepository.searchByBookAuthor(kw, PageRequest.of(page, pageSize));
+        } else {
+            throw new IllegalArgumentException("Choix de recherche non valide");
+        }
+
+        // Vérification de l'existence de résultats
+        if (books == null || books.isEmpty()) {
+            throw new BookNotFoundException("Book not found");
+        }
+
+        List<BookDTO> bookDTOList = books.getContent()
+                .stream()
+                .map(dtoMapper::fromBook)
+                .collect(Collectors.toList());
+
+        booksDTO.setBookDTOList(bookDTOList);
+        booksDTO.setTotalpage(books.getTotalPages());
+
+        return booksDTO;
+    }
+
+
+    @Override
     public List<BookDTO> listBooksByPage(int page) {
         Page<book> books = bookRepository.findAll(PageRequest.of(page,60));
         List<BookDTO> collect = books.stream().map(customer -> dtoMapper.fromBook(customer)).collect(Collectors.toList());
@@ -90,5 +125,13 @@ public class BookServiceImplementation implements BookService{
         dtoMapper.updateBookFromDTO(bookDTO, existingbook);
         // Save the updated patient
         return bookRepository.save(existingbook);
+    }
+    @Override
+    public List<book> getTop5RatedBooks() {
+        return bookRepository.findTop5ByAvgRating();
+    }
+    @Override
+    public List<book> findTop5ByWeightedRating() {
+        return bookRepository.findTop5ByWeightedRating();
     }
 }

@@ -23,10 +23,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.ADMIN;
 import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.MANAGER;
@@ -40,14 +43,32 @@ public class RecommendationSystemBookApplication {
 	@Bean
 	CommandLineRunner commandLineRunner (BookService bookService, UserService userService, BookRatingService bookRatingService,AuthenticationService service) {
 		return args -> {
+//			List<book> books = bookService.getListBooks();
+//			int i=0;
+//			for (book book : books) {
+//				System.out.println("book : "+i);
+//				Long ratingCount = bookRatingService.getRatingCount(book);
+//				Double avgRating = bookRatingService.calculateAvgRatingByBook(book);
+//
+//				// Mettre à jour les champs dans l'entité `Book`
+//				book.setRatingCount(ratingCount != null ? ratingCount : 0L);
+//				book.setAvgRating(avgRating != null ? avgRating : 0.0);
+//
+//				// Sauvegarder les modifications
+//				bookService.saveBook(book);
+//			}
 //			var admin = RegisterRequest.builder()
 //					.prenom("Admin")
 //					.nom("Admin")
 //					.gmail("admin@mail.com")
-//					.password("password")
+//					.password("admin_1234")
 //					.role(ADMIN)
+//					.tel("0600112233")
+//					.age(24L)
+//					.location("vide")
 //					.build();
-//			System.out.println("Admin token: " + service.register(admin).getAccessToken());
+//			service.register(admin);
+//			System.out.println("Save Admin");
 
 //			var manager = RegisterRequest.builder()
 //					.prenom("MANAGER")
