@@ -33,17 +33,20 @@ public class JwtService {
     return claimsResolver.apply(claims);
   }
 
-  public String generateToken(UserDetails userDetails, Long userId) {
+  public String generateToken(UserDetails userDetails, Long userId, String role) {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("userId", userId);  // Add userId to claims
+    extraClaims.put("role", role);      // Add role to claims
     return buildToken(extraClaims, userDetails, jwtExpiration);
   }
 
-  public String generateRefreshToken(UserDetails userDetails, Long userId) {
+  public String generateRefreshToken(UserDetails userDetails, Long userId, String role) {
     Map<String, Object> extraClaims = new HashMap<>();
     extraClaims.put("userId", userId);  // Add userId to claims
+    extraClaims.put("role", role);      // Add role to claims
     return buildToken(extraClaims, userDetails, refreshExpiration);
   }
+
 
   private String buildToken(
           Map<String, Object> extraClaims,
@@ -91,4 +94,9 @@ public class JwtService {
     Claims claims = extractAllClaims(token);
     return claims.get("userId", Long.class);  // Extract userId from token
   }
+  public String extractUserRole(String token) {
+    Claims claims = extractAllClaims(token);
+    return claims.get("role", String.class);  // Extract role from token
+  }
+
 }

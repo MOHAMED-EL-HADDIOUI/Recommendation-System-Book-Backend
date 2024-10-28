@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
@@ -54,7 +55,8 @@ public class BookController {
         List<book> list = bookService.getListBooks();
         return list;
     }
-    @GetMapping("/x/search")
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @GetMapping("/x/search/book")
     public BooksDTO getBooks(@RequestParam(name = "keyword", defaultValue = "") String keyword, @RequestParam(name = "page", defaultValue = "0") int page, @RequestParam(name = "pagesize", defaultValue = "5") int pagesize, @RequestParam(name = "choix", defaultValue = "nom") String choix) throws  BookNotFoundException {
         BooksDTO booksDTO = bookService.getBooks("%" + keyword + "%",choix, page,pagesize);
         return booksDTO;
@@ -64,26 +66,29 @@ public class BookController {
         book book = bookService.getBook(bookId);
         return book;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/size")
     public int getSizeBooks(){
         int size = bookService.getListBooks().size();
         return size;
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable String bookId) {
+        System.out.println("delete book");
         bookService.deletebook(bookId);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/update/{bookId}")
     public ResponseEntity<book> updateBook(@PathVariable String bookId, @RequestBody BookDTO bookDTO) {
-        System.out.println("update book "+bookId);
         book book =  bookService.updateBook(bookId, bookDTO);
         return ResponseEntity.ok(book);
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping("/save")
     public ResponseEntity<book> savebook(@RequestBody BookDTO bookDTO)
     {
-        System.out.println("add book ");
         book book = bookService.saveBookDTO(bookDTO);
         return ResponseEntity.ok(book);
     }
@@ -92,7 +97,7 @@ public class BookController {
         BooksDTO booksDTO = bookService.getBookByNom("%" + keyword + "%", page);
         return booksDTO;
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @GetMapping("/user")
     public BooksDTO getBooksRatedByAuthenticatedUser(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "0") int page) {
         String token = request.getHeader("Authorization").substring(7);
@@ -113,6 +118,7 @@ public class BookController {
         List<book> subList = books.subList(start, end);
         return new PageImpl<>(subList, pageable, books.size());
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @GetMapping("/recommend")
     public BooksDTO getBooksrecommendforUser(HttpServletRequest request, @RequestParam(name = "page", defaultValue = "0") int page) {
         String token = request.getHeader("Authorization").substring(7);
@@ -266,10 +272,12 @@ public class BookController {
         }
         return booksDTO;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/top5ratedbooks")
     public List<book> getTop5RatedBooks() {
         return bookService.getTop5RatedBooks();
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/findTop5ByWeightedRating")
     public List<book> findTop5ByWeightedRating() {
         System.out.println("get Top books");

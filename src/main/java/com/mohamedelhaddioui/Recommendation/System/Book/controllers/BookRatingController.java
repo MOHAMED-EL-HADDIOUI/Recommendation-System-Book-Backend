@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -37,11 +38,13 @@ public class BookRatingController {
         this.bookRatingService = bookRatingService;
         this.jwtService = jwtService;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("")
     public List<BookRating> getbookRatings(){
         List<BookRating> list = bookRatingService.getListBookRatings();
         return list;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @GetMapping("/{bookId}")
     public int getbookRating(HttpServletRequest request,@PathVariable("bookId")  String bookId){
         String token = request.getHeader("Authorization").substring(7);
@@ -49,7 +52,7 @@ public class BookRatingController {
         int bookRating = bookRatingService.getRating(userId,bookId);
         return bookRating;
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @PostMapping("/{bookId}/{rating}")
     public ResponseEntity<BookRating>  postbookRating(HttpServletRequest request,@PathVariable("bookId")  String bookId,@PathVariable("rating")  String rating){
         String token = request.getHeader("Authorization").substring(7);
@@ -65,16 +68,17 @@ public class BookRatingController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(bookRating1);
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @PostMapping("/save")
     public BookRating saveBook(@RequestBody BookRating bookRating)
     {
         BookRating bookRating1 = bookRatingService.saveBookRating(bookRating);
         return bookRating1;
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER', 'USER')")
     @DeleteMapping("/{bookRatingId}")
     public ResponseEntity<Void> deletebookRating(@PathVariable("bookRatingId") Long id) {
         bookRatingService.deleteBookRating(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

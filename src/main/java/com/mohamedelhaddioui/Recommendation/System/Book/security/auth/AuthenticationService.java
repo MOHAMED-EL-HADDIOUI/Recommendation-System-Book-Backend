@@ -71,8 +71,8 @@ public class AuthenticationService {
     var savedUser = repository.save(user);
 
     // Génération des tokens avec l'ID de l'utilisateur
-    var jwtToken = jwtService.generateToken(savedUser, savedUser.getId());
-    var refreshToken = jwtService.generateRefreshToken(savedUser, savedUser.getId());
+    var jwtToken = jwtService.generateToken(savedUser, savedUser.getId(),savedUser.getRole().name());
+    var refreshToken = jwtService.generateRefreshToken(savedUser, savedUser.getId(),savedUser.getRole().name());
 
     // Sauvegarde du token utilisateur
     saveUserToken(savedUser, jwtToken);
@@ -99,8 +99,8 @@ public class AuthenticationService {
             .orElseThrow();
 
     // Generate tokens with the userId
-    var jwtToken = jwtService.generateToken(user, user.getId()); // Include userId
-    var refreshToken = jwtService.generateRefreshToken(user, user.getId()); // Include userId
+    var jwtToken = jwtService.generateToken(user, user.getId(),user.getRole().name()); // Include userId
+    var refreshToken = jwtService.generateRefreshToken(user, user.getId(),user.getRole().name()); // Include userId
 
     // Revoke any existing tokens for the user
     revokeAllUserTokens(user);
@@ -160,7 +160,7 @@ public class AuthenticationService {
 
       // Verify if the token is valid
       if (jwtService.isTokenValid(refreshToken, user)) {
-        var accessToken = jwtService.generateToken(user, user.getId()); // Include userId
+        var accessToken = jwtService.generateToken(user, user.getId(),user.getRole().name()); // Include userId
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
 

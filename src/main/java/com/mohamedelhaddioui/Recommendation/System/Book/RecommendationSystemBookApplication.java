@@ -209,7 +209,7 @@ public class RecommendationSystemBookApplication {
 //								.tel(getCellValue(row.getCell(5)))
 //								.gmail(gmailWithI)
 //								.password(getCellValue(row.getCell(3))+" "+getCellValue(row.getCell(4)))
-//								.role(MANAGER)
+//								.role(USER)
 //								.build();
 //						service.register(u3);
 //					} else {

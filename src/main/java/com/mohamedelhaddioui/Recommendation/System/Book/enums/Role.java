@@ -14,7 +14,13 @@ import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Permission.
 @RequiredArgsConstructor
 public enum Role {
 
-    USER(Collections.emptySet()),
+    USER(
+            Set.of(
+
+                    USER_UPDATE,
+                    USER_READ
+            )
+    ),
     ADMIN(
             Set.of(
                     ADMIN_READ,
@@ -34,9 +40,7 @@ public enum Role {
                     MANAGER_DELETE,
                     MANAGER_CREATE
             )
-    )
-
-    ;
+    );
 
     @Getter
     private final Set<Permission> permissions;

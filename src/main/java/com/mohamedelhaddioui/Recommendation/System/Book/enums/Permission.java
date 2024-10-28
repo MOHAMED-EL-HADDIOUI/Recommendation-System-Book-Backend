@@ -1,5 +1,4 @@
 package com.mohamedelhaddioui.Recommendation.System.Book.enums;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +12,10 @@ public enum Permission {
     MANAGER_READ("management:read"),
     MANAGER_UPDATE("management:update"),
     MANAGER_CREATE("management:create"),
-    MANAGER_DELETE("management:delete")
+    MANAGER_DELETE("management:delete"),
+    USER_READ("user:read"),
+    USER_UPDATE("user:update")
+
     ;
     @Getter
     private final String permission;

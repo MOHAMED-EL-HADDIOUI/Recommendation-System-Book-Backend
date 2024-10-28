@@ -1,5 +1,4 @@
 package com.mohamedelhaddioui.Recommendation.System.Book.security.configurations;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +14,9 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.List;
 
-import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.ADMIN;
-import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.MANAGER;
+import static com.mohamedelhaddioui.Recommendation.System.Book.enums.Role.*;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -47,21 +44,29 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Ensure CORS is applied
-                .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                .authorizeHttpRequests(req -> req
+                                .requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers(GET, "/api/v1/books/**").permitAll()
-                                .requestMatchers(DELETE, "/api/v1/books/**").hasAnyRole(ADMIN_DELETE.name())
-                                .requestMatchers(POST, "/api/v1/books/recommend/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-                                .requestMatchers(GET, "/api/v1/books/similaires/**").permitAll()
-                                .requestMatchers(GET, "/api/v1/bookratings/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-                                .requestMatchers(POST, "/api/v1/bookratings/**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(GET, "/api/v1/users/**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
+                                .requestMatchers(POST, "/api/v1/users/adduser**").hasAnyRole(ADMIN.name())
+                                .requestMatchers(DELETE, "/api/v1/users/delete**").hasAnyRole(ADMIN.name())
+                                .requestMatchers(GET, "/api/v1/books/similaires**").permitAll()
+                                .requestMatchers(GET, "/api/v1/books/top5ratedbooks**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(GET, "/api/v1/books/findTop5ByWeightedRating**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(GET, "/api/v1/books/recommend**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
+                                .requestMatchers(GET, "/api/v1/books/x/search/**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(POST, "/api/v1/books/save**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(PUT, "/api/v1/books/update**").hasAnyRole(ADMIN.name(), MANAGER.name())
+                                .requestMatchers(DELETE, "/api/v1/books/**").hasAnyRole(ADMIN.name())
+                                .requestMatchers(POST, "/api/v1/books/recommend/**").hasAnyRole(ADMIN.name(), MANAGER.name(), USER.name())
+                                .requestMatchers(GET, "/api/v1/bookratings/**").hasAnyRole(ADMIN.name(), MANAGER.name(),USER.name())
+                                .requestMatchers(GET, "/api/v1/bookratings/**").hasAnyRole(ADMIN.name(), MANAGER.name(),USER.name())
                                 .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name())
                                 .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
@@ -82,7 +87,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
